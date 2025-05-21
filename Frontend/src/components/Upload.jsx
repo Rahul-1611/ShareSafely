@@ -4,7 +4,7 @@ const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 
-function Upload() {
+function Upload({ onSuccess, setLoading }) {
     const [file, setFile] = useState(null);
     const [expiry, setExpiry] = useState("600");
 
@@ -25,9 +25,29 @@ function Upload() {
         }
         setFile(droppedFile);
     };
-    function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("hello");
+        if (!file) {
+            alert("Please select a file before submitting.");
+            return;
+        }
+        setLoading(true);
+
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("expiry", expiry);
+
+        setTimeout(() => {
+            fetch("http://localhost:3000/link", {
+                method: "POST",
+                body: formData,
+            })
+                .then((res) => res.json())
+                .then((result) => onSuccess(result.link))
+                .catch((err) => console.error("Upload failed:", err))
+                .finally(() => setLoading(false));
+        }, 2000);
     }
     return (
         <form onSubmit={handleSubmit} className="w-full justify-center items-center max-w-md mx-auto p-4 flex flex-col gap-4">
