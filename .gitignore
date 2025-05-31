@@ -1,2 +1,14 @@
 node_modules/
 .DS_Store
+# Environment variables
+.env
+Backend/.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Build artifacts (optional)
+dist/
+build/

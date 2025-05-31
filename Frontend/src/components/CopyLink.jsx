@@ -18,6 +18,7 @@ export default function CopyLink({ link, onReset }) {
                 <button
                     onClick={handleCopy}
                     disabled={copied}
+                    aria-label="Copy link to clipboard"
                     className={`ml-4 px-3 py-1 border border-orange bg-transparent text-orange text-sm rounded 
               transition flex items-center justify-center
               ${copied ? "opacity-50 cursor-not-allowed bg-orange" : "hover:bg-orange hover:text-peach"}`}
