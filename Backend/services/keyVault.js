@@ -3,6 +3,7 @@ const { SecretClient } = require("@azure/keyvault-secrets")
 require('dotenv').config();
 
 const credential = new DefaultAzureCredential();
+//takes cred from the cli session
 
 // Build the URL to reach your key vault
 const vaultName = process.env.AZURE_KEY_VAULT_NAME;

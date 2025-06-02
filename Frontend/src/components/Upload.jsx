@@ -33,21 +33,18 @@ function Upload({ onSuccess, setLoading }) {
         }
         setLoading(true);
 
-
         const formData = new FormData();
         formData.append("file", file);
         formData.append("expiry", expiry);
 
-        setTimeout(() => {
-            fetch("http://localhost:3000/link", {
-                method: "POST",
-                body: formData,
-            })
-                .then((res) => res.json())
-                .then((result) => onSuccess(result.link))
-                .catch((err) => console.error("Upload failed:", err))
-                .finally(() => setLoading(false));
-        }, 2000);
+        fetch("http://localhost:3000/link", {
+            method: "POST",
+            body: formData,
+        })
+            .then((res) => res.json())
+            .then((result) => onSuccess(result.link))
+            .catch((err) => console.error("Upload failed:", err))
+            .finally(() => setLoading(false));
     }
     return (
         <form onSubmit={handleSubmit} className="w-full justify-center items-center max-w-md mx-auto p-4 flex flex-col gap-4">
