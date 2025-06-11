@@ -1,4 +1,5 @@
-import CopyLink from './components/copyLink';
+import CopyLink from "./components/CopyLink";
+
 import Upload from './components/Upload'
 import { useState } from 'react';
 
