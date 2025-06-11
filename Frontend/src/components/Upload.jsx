@@ -37,7 +37,7 @@ function Upload({ onSuccess, setLoading }) {
         formData.append("file", file);
         formData.append("expiry", expiry);
 
-        fetch("http://localhost:3000/link", {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/link`, {
             method: "POST",
             body: formData,
         })
