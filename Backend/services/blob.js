@@ -6,6 +6,7 @@ const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
 
 let credential = new DefaultAzureCredential();
 // takes cred from azure BTS (Managed Identity)(locally it was taking it from CLI session)
+// function app - turn on managed identity first
 
 let url = `https://${accountName}.blob.core.windows.net`;
 
