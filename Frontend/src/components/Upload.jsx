@@ -54,7 +54,7 @@ function Upload({ onSuccess, setLoading }) {
             // Convert file to Base64 using async/await
             const fileBase64 = await fileToBase64(file);
 
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/UploadFile`, {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/UploadFile`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
