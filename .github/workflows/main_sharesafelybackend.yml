@@ -77,5 +77,5 @@ jobs:
         uses: Azure/functions-action@v1.5.1
         id: fa
         with:
-          app-name: 'sharesafelybackend-bhb6hbg9frezfxa0'
+          app-name: 'shareSafelyBackend'
           package: '.'
