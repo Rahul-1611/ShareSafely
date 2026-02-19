@@ -3,7 +3,8 @@ import UploadIcon from '../assets/upload.svg';
 const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 function Upload({ onSuccess, setLoading }) {
     const [file, setFile] = useState(null);
