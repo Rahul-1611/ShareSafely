@@ -49,7 +49,7 @@ function Upload({ onSuccess, setLoading }) {
             const { blobName, uploadUrl } = await uploadRes.json();
 
             // Step 2: Upload file directly to Azure Blob Storage
-            await fetch(uploadUrl, {
+            const putRes = await fetch(uploadUrl, {
                 method: "PUT",
                 headers: {
                     "x-ms-blob-type": "BlockBlob",
@@ -57,6 +57,8 @@ function Upload({ onSuccess, setLoading }) {
                 },
                 body: file  // send raw file, no Base64 encoding needed
             });
+
+            if (!putRes.ok) throw new Error("Upload to storage failed");
 
             // Step 3: Get a read-only SAS URL from the backend
             const linkRes = await fetch(`${API_BASE}/GenerateLink`, {
