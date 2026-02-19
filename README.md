@@ -11,7 +11,7 @@ This project serves as a comprehensive implementation of Azure storage solutions
 ## 🌐 Live Demo
 
 - **Frontend**: [https://share-safely.vercel.app/](https://sharesafely.azurewebsites.net)
-- **Backend API**: Deployed on **Azure Web Apps**
+- **Backend API**: Deployed on **Azure Functions**
 
 ## 📦 Key Features
 
@@ -27,8 +27,8 @@ This project serves as a comprehensive implementation of Azure storage solutions
 
 ```
 ┌─────────────────┐    HTTPS     ┌──────────────────┐    SDK/API     ┌─────────────────┐
-│   Web Frontend  │──────────────▶│   Web App        │────────────────▶│  Azure Blob     │
-│                 │               │ (Azure Web Apps) │                 │   Storage       │
+│  Web Frontend   │──────────────▶│  Azure Function  │────────────────▶│  Azure Blob     │
+│ (React + Vite)  │               │    (Node.js)     │                 │   Storage       │
 │                 │               │                  │                 │                 │
 └─────────────────┘               └──────────────────┘                 └─────────────────┘
                                            │                                     │
@@ -50,12 +50,12 @@ This project serves as a comprehensive implementation of Azure storage solutions
 
 ### ☁️ Core Azure Services
 - **Azure Blob Storage** - Secure file storage with data at rest encryption and lifecycle management
-- **Azure Web Apps** - Application hosting and deployment
+- **Azure Functions** - Serverless backend hosting and execution
 - **Azure Key Vault** - Secure credential and configuration management
 
 
 ### 🧰 Development Stack
-- **Node.js - (Express)** - Web application framework (configurable)
+- **Node.js (Azure Functions)** - Serverless backend logic
 - **Azure Storage SDK** - Blob operations and SAS token generation
 - **Azure Key Vault SDK** - Secure credential retrieval
 - **React** - Frontend user interface
@@ -136,7 +136,7 @@ This project demonstrates proficiency in:
 
 - **Azure Blob Storage** - Secure file storage and lifecycle management
 - **Azure Key Vault** - Enterprise credential management
-- **Azure Web Apps** - Scalable application hosting
+- **Azure Functions** - Serverless application hosting
 - **Lifecycle Management Policies** - Automated storage optimization
 - **SAS Token Management** - Secure, time-limited access patterns
 - **Security Best Practices** - Zero-trust security model
