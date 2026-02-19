@@ -1,4 +1,4 @@
-const { BlobServiceClient, generateBlobSASQueryParameters, ContainerSASPermissions } = require("@azure/storage-blob");
+const { BlobServiceClient, generateBlobSASQueryParameters, ContainerSASPermissions, BlobSASPermissions } = require("@azure/storage-blob");
 const { DefaultAzureCredential } = require("@azure/identity");
 
 const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
@@ -12,19 +12,28 @@ let url = `https://${accountName}.blob.core.windows.net`;
 
 let blobServiceClient = new BlobServiceClient(url, credential);
 
-
-const uploadFile = async (blobName, buffer, contentType) => {
+// Generates a short-lived write-only SAS URL for the frontend to upload directly to Blob Storage
+const generateUploadSaSUrl = async (blobName, contentType) => {
     const containerClient = blobServiceClient.getContainerClient(containerName);
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    const blobClient = containerClient.getBlockBlobClient(blobName);
 
-    await blockBlobClient.uploadData(buffer, {
-        blobHTTPHeaders: {
-            blobContentType: contentType
-        }
-    });
-    return blockBlobClient.url;
-}
+    const now = new Date();
+    const expiresOn = new Date(now.getTime() + 5 * 60 * 1000); // 5 minutes to upload
+    const userDelegationKey = await blobServiceClient.getUserDelegationKey(now, expiresOn);
 
+    const sasToken = generateBlobSASQueryParameters({
+        containerName,
+        blobName,
+        permissions: BlobSASPermissions.parse("cw"), // create + write only
+        startsOn: now,
+        expiresOn: expiresOn,
+        contentType: contentType
+    }, userDelegationKey, accountName).toString();
+
+    return `${blobClient.url}?${sasToken}`;
+};
+
+// Generates a read-only SAS URL for sharing the uploaded file
 const generateSaSUrl = async (blobName, expiryInSeconds) => {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobClient = containerClient.getBlobClient(blobName);
@@ -45,4 +54,4 @@ const generateSaSUrl = async (blobName, expiryInSeconds) => {
     return `${blobClient.url}?${sasToken}`;
 };
 
-module.exports = { uploadFile, generateSaSUrl }
+module.exports = { generateUploadSaSUrl, generateSaSUrl }

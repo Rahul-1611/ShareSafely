@@ -3,6 +3,7 @@ import UploadIcon from '../assets/upload.svg';
 const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 function Upload({ onSuccess, setLoading }) {
     const [file, setFile] = useState(null);
@@ -26,22 +27,6 @@ function Upload({ onSuccess, setLoading }) {
         setFile(droppedFile);
     };
 
-    const fileToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                const base64Data = reader.result.split(',')[1];
-                resolve({
-                    name: file.name,
-                    data: base64Data,
-                    contentType: file.type
-                });
-            };
-            reader.onerror = reject;
-        });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
@@ -51,23 +36,39 @@ function Upload({ onSuccess, setLoading }) {
         setLoading(true);
 
         try {
-            // Convert file to Base64 using async/await
-            const fileBase64 = await fileToBase64(file);
-
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/UploadFile`, {
+            // Step 1: Get a write-only SAS URL from the backend
+            const uploadRes = await fetch(`${API_BASE}/GetUploadUrl`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    file: fileBase64,
-                    expiry: expiry,
+                    fileName: file.name,
                     contentType: file.type
                 }),
             });
+            const { blobName, uploadUrl } = await uploadRes.json();
 
-            const result = await response.json();
+            // Step 2: Upload file directly to Azure Blob Storage
+            await fetch(uploadUrl, {
+                method: "PUT",
+                headers: {
+                    "x-ms-blob-type": "BlockBlob",
+                    "Content-Type": file.type
+                },
+                body: file  // send raw file, no Base64 encoding needed
+            });
+
+            // Step 3: Get a read-only SAS URL from the backend
+            const linkRes = await fetch(`${API_BASE}/GenerateLink`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    blobName: blobName,
+                    expiry: expiry
+                }),
+            });
+            const result = await linkRes.json();
             onSuccess(result.link);
+
         } catch (err) {
             console.error("Upload failed:", err);
             alert("Upload failed. Please try again.");
