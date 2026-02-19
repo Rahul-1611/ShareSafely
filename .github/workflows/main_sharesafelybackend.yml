@@ -74,7 +74,7 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9435D20B81F84CB5A502787746C1164C }}
 
       - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@v1.5.1
         id: fa
         with:
           app-name: 'shareSafelyBackend'
