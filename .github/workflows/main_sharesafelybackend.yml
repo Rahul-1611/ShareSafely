@@ -1,49 +1,43 @@
-name: Build and deploy Node.js project to Azure Function App - shareSafelyBackend
+name: Build and Deploy Azure Function
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - 'Backend/**' 
+      - 'Backend/**'
   workflow_dispatch:
 
 env:
+  AZURE_FUNCTIONAPP_NAME: shareSafelyBackend
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Backend'
-  NODE_VERSION: '22.x'
+  NODE_VERSION: '18'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        run: npm install
+
+      - name: Login to Azure (using az login)
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: Login to Azure
-        uses: azure/login@v2
+      - name: Deploy to Azure Function App
+        uses: Azure/functions-action@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_ABAA40656DE149E181708D3BFFE068BC }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_68AB8893BB324D838BC93F7F9A436A3C }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9435D20B81F84CB5A502787746C1164C }}
-
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.1
-        with:
-          app-name: shareSafelyBackend
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
