@@ -4,7 +4,7 @@
 
 ## 🔐 Project Overview
 
-**ShareSafely** is a secure, cloud-based file-sharing web application that enables users to upload files and generate time-limited sharing links. Built on Azure's robust cloud infrastructure, this application demonstrates modern cloud engineering practices while providing a safe and efficient way to share files with automatic expiration capabilities.
+**ShareSafely** is a secure, cloud-based file-sharing web application that enables users to upload files and generate time-limited sharing links. Built on Azure cloud infrastructure, this application demonstrates modern cloud engineering practices while providing a safe and efficient way to share files with automatic expiration capabilities.
 
 This project serves as a comprehensive implementation of Azure storage solutions, showcasing secure file handling, credential management, and automated cleanup processes.
 
@@ -19,7 +19,6 @@ This project serves as a comprehensive implementation of Azure storage solutions
 - 🔒 **Enterprise-Grade Security**: Data at rest encryption with Azure Blob Storage
 - ⏰ **Time-Limited Access**: Generate unique, expiring links using Azure Storage SDK
 - 🔑 **Credential Management**: Secure storage of sensitive data using Azure Key Vault
-- 📊 **Activity Monitoring**: Track file upload and download activities
 - 🗑️ **Automated Cleanup**: Automatic removal of expired files using Azure Blob Storage Lifecycle Management
 - 🛡️ **Zero Permanent Access**: No persistent public access to uploaded files
 
@@ -60,14 +59,6 @@ This project serves as a comprehensive implementation of Azure storage solutions
 - **GitHub Actions** - CI/CD pipeline linked with Azure App Services
 - **Vercel** - Frontend with CI/CD setup
 
-## 🔐 Security Features
-
-- 🔒 **Data at Rest Encryption** - All files encrypted in Azure Blob Storage
-- 🔑 **Azure Key Vault Integration** - No hardcoded credentials in application
-- ⏰ **SAS Token Authentication** - Time-limited, secure access URLs
-- 🛡️ **HTTPS Enforcement** - All communications encrypted in transit
-- 📋 **Access Monitoring** - Comprehensive logging of all file operations
-- 🗑️ **Automatic Expiration** - Files and links expire automatically
 
 ## 📁 Project Structure
 
@@ -104,8 +95,8 @@ sharesafely/
 |---------|-------------|---------|
 | `KeyVaultName` | Name of your Azure Key Vault | `ShareSafely-KeyVault` |
 | `BlobContainerName` | Blob storage container name | `uploads` |
-| `DefaultLinkExpiryHours` | Default expiry time for links | `24` |
-| `MaxFileSizeMB` | Maximum file size allowed | `100` |
+| `DefaultLinkExpiryHours` | Default expiry time for links | `10min 1h 24h` |
+| `MaxFileSizeMB` | Maximum file size allowed | `10` |
 
 ### Key Vault Secrets
 
@@ -124,13 +115,7 @@ The project uses Azure Blob Storage Lifecycle Management to automatically:
 - Reduce storage costs through automated management
 
 
-### Monitoring Dashboard
 
-Track key metrics through Azure Monitor:
-- File upload/download counts
-- Storage usage trends
-- Link generation patterns
-- Error rates and performance metrics
 
 ## 🧠 Learning Outcomes
 
@@ -142,26 +127,7 @@ This project demonstrates proficiency in:
 - **Lifecycle Management Policies** - Automated storage optimization
 - **SAS Token Management** - Secure, time-limited access patterns
 - **Security Best Practices** - Zero-trust security model
-- **Monitoring & Observability** - Application performance tracking
 
-## 📌 Roadmap
-
-- [ ] 🔐 **Multi-Factor Authentication** - Enhanced user security
-- [ ] 📱 **Mobile Application** - Cross-platform mobile support
-- [ ] 🔄 **File Versioning** - Multiple versions of uploaded files
-- [ ] 📊 **Advanced Analytics** - Detailed usage reporting
-- [ ] 🌍 **Global Distribution** - CDN integration for worldwide access
-- [ ] 🤖 **Virus Scanning** - Automated malware detection
-- [ ] 📧 **Email Notifications** - Upload/download notifications
-
-## 🚨 Important Security Considerations
-
-- Always use HTTPS for all communications
-- Regularly rotate Key Vault secrets
-- Monitor access patterns for suspicious activity
-- Implement proper CORS policies
-- Use Azure AD for authentication in production
-- Enable Azure Security Center recommendations
 
 
 ## 📜 License
@@ -172,10 +138,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Rahul Deshmukh**
 - 💼 LinkedIn: [Connect with me](https://www.linkedin.com/in/rahuldeshmukh-2k02/)
-
-🤖 **Assistance & Authoring Support:**
-
-ChatGPT-4o
 
 ---
 
