@@ -15,7 +15,7 @@ module.exports = async function (context, req) {
             return;
         }
 
-        // Create a unique blob name to avoid collisions
+        // Create a unique blob name 
         const blobName = Date.now() + "_" + fileName;
 
         // Generate a short-lived write-only SAS URL
